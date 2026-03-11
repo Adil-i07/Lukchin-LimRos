@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลูกชิ้นลิ้มรส</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Mitr:wght@300;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        body { font-family: 'Kanit', sans-serif; scroll-behavior: smooth; }
+        .mitr { font-family: 'Mitr', sans-serif; }
+        
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .product-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 2rem;
+        }
+
+        .product-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .sidebar-transition {
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .can-icon { animation: float 3s ease-in-out infinite; }
+
+        .discount-badge {
+            background: linear-gradient(45deg, #f43f5e, #fb923c);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* สำหรับซ่อน Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 overflow-x-hidden">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-[80] px-6 py-4 flex justify-between items-center bg-white/50 backdrop-blur-md border-b border-slate-200">
+        <div class="flex items-center space-x-2">
+            <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center hover:bg-slate-200 rounded-full transition">
+                <span class="material-icons-round">menu</span>
+            </button>
+            <span class="mitr font-bold text-xl tracking-tighter">ลูกชิ้นลิ้มรส</span>
+        </div>
+        <div class="relative">
+            <button onclick="toggleSidebar()" class="flex items-center space-x-2 bg-slate-900 text-white px-4 py-2 rounded-full hover:bg-red-600 transition shadow-lg">
+                <span class="material-icons-round text-sm">shopping_cart</span>
+                <span id="cart-count-nav" class="font-bold">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sidebar (Drawer) -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-[90] hidden opacity-0 transition-opacity duration-300"></div>
+    <div id="sidebar" class="fixed top-0 left-0 h-full w-[320px] bg-white z-[100] shadow-2xl sidebar-transition -translate-x-full flex flex-col">
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+            <h2 class="mitr font-bold text-2xl flex items-center">
+                <span class="material-icons-round mr-2 text-red-500">shopping_basket</span> เมนู & รถเข็น
+            </h2>
+            <button onclick="toggleSidebar()" class="text-slate-400 hover:text-red-500 transition">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+
+        <div class="flex-grow overflow-y-auto p-6 space-y-8">
+            <!-- Cart Section -->
+            <div>
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">รถเข็นของคุณ</h3>
+                <div id="cart-items" class="space-y-4">
+                    <p class="text-slate-400 text-sm italic text-center py-4">ไม่มีสินค้าในรถเข็น...</p>
+                </div>
+            </div>
+
+            <!-- Shop Quick Links -->
+            <div>
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">สินค้าทอดกรอบ</h3>
+                <ul class="space-y-2">
+                    <li><button onclick="scrollToAndOpen(1)" class="w-full flex items-center p-2 hover:bg-slate-100 rounded-xl transition text-slate-600">🍊 ส้มทอดกระป๋อง</button></li>
+                    <li><button onclick="scrollToAndOpen(2)" class="w-full flex items-center p-2 hover:bg-slate-100 rounded-xl transition text-slate-600">🍏 ฝรั่งทอดกระป๋อง</button></li>
+                    <li><button onclick="scrollToAndOpen(3)" class="w-full flex items-center p-2 hover:bg-slate-100 rounded-xl transition text-slate-600">🍇 องุ่นทอดกระป๋อง</button></li>
+                    <li><button onclick="scrollToAndOpen(4)" class="w-full flex items-center p-2 hover:bg-slate-100 rounded-xl transition text-slate-600">🍉 แตงโมทอดกระป๋อง</button></li>
+                </ul>
+            </div>
+
+            <!-- Locked Items -->
+            <div>
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">เร็วๆ นี้</h3>
+                <ul class="space-y-2 opacity-60">
+                    <li class="flex items-center p-2 text-slate-400 text-sm"><span class="material-icons-round text-sm mr-2">lock</span> ทุเรียนทอดระดับตำนาน</li>
+                    <li class="flex items-center p-2 text-slate-400 text-sm"><span class="material-icons-round text-sm mr-2">lock</span> มะนาวทอดสะท้านทรวง</li>
+                </ul>
+            </div>
+
+            <!-- Contact Links -->
+            <div>
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">ติดต่อเรา</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="https://github.com/Adil-i07/Lukchin-LimRos/issues/1#issue-4056434562" target="_blank" class="flex flex-col items-center justify-center p-3 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 transition">
+                        <span class="material-icons-round mb-1">chat</span> 
+                        <span class="text-xs font-bold">ความเห็น</span>
+                    </a>
+                    <a href="https://adil-i07.github.io/Lukchin-LimRos/" class="flex flex-col items-center justify-center p-3 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 transition">
+                        <span class="material-icons-round mb-1">share</span>
+                        <span class="text-xs font-bold">แชร์ต่อ</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Summary Footer -->
+        <div class="p-6 bg-slate-50 border-t border-slate-200">
+            <div id="discount-notice" class="hidden mb-3 p-2 rounded-lg bg-red-100 text-red-600 text-[10px] font-bold text-center discount-badge">
+                รับส่วนลด 15% แล้ว! (ซื้อครบ 4 ป๋อง)
+            </div>
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-slate-500">ราคารวม:</span>
+                <span id="cart-total" class="text-xl font-bold text-slate-900">0 เจ๋ง</span>
+            </div>
+            <button onclick="openCheckout()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-red-600 transition shadow-lg flex items-center justify-center">
+                <span class="material-icons-round mr-2">payment</span> ชำระเงิน
+            </button>
+        </div>
+    </div>
+
+    <!-- Header / Hero Section -->
+    <header class="relative overflow-hidden bg-gradient-to-br from-red-500 via-orange-500 to-yellow-500 text-white pt-32 pb-32 px-6">
+        <div class="container mx-auto text-center relative z-10">
+            <h1 class="text-6xl md:text-8xl font-bold mb-6 mitr tracking-tight">ลูกชิ้นลิ้มรส</h1>
+            <p class="text-xl md:text-2xl max-w-2xl mx-auto opacity-90 font-light leading-relaxed mb-8 italic">
+                "ถ้ามันทอดได้ เราจะเอาใส่กระป๋องให้คุณ"
+            </p>
+            <div class="inline-block bg-white text-red-500 px-6 py-2 rounded-full font-bold shadow-xl animate-bounce text-sm">
+                โปรโมชั่น: ซื้อ 4 ป๋อง ลดทันที 15% คละรสได้!
+            </div>
+        </div>
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+            <svg class="relative block w-full h-[60px]" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C58.47,100.5,123.47,100.5,182.25,93.63,240.42,86.83,281,71,321.39,56.44Z" fill="#f8fafc"></path>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 -mt-16 relative z-20 pb-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="product-grid"></div>
+    </main>
+
+    <!-- Modal Backdrop -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] hidden items-center justify-center p-4 overflow-y-auto">
+        
+        <!-- Product Modal -->
+        <div id="product-modal" class="bg-white w-full max-w-4xl rounded-[3rem] shadow-2xl overflow-hidden relative hidden animate-in fade-in zoom-in duration-300">
+            <button onclick="closeModal()" class="absolute top-6 right-6 z-10 w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition">
+                <span class="material-icons-round">close</span>
+            </button>
+            <div class="flex flex-col md:flex-row">
+                <div id="modal-color" class="md:w-1/2 p-12 flex flex-col items-center justify-center text-white relative overflow-hidden">
+                    <div id="modal-icon-container" class="can-icon text-[120px] mb-8 relative z-10">🍊</div>
+                    <!-- ใส่รูปป๋องตัวอย่างตรงนี้ -->
+                    <div class="w-40 h-56 bg-white/20 rounded-2xl border-2 border-white/30 flex items-center justify-center backdrop-blur-sm shadow-xl relative z-10">
+                        <span class="material-icons-round text-6xl opacity-40">inventory_2</span>
+                        <div class="absolute bottom-4 text-xs font-bold opacity-80">LIMROS CAN v.2</div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 p-10 md:p-14 bg-white">
+                    <h2 id="modal-title" class="text-4xl font-bold mitr mb-2 uppercase">ชื่อสินค้า</h2>
+                    <div class="text-2xl text-red-500 font-bold mb-6 italic">5 เจ๋ง / ป๋อง</div>
+                    <p id="modal-desc" class="text-slate-600 leading-relaxed mb-8 text-sm">รายละเอียดสินค้า</p>
+                    <div class="flex flex-col space-y-4">
+                        <div class="flex items-center justify-between bg-slate-100 p-2 rounded-2xl">
+                            <button onclick="updateQty(-1)" class="w-10 h-10 bg-white rounded-xl shadow-sm hover:bg-slate-200 transition flex items-center justify-center"><span class="material-icons-round">remove</span></button>
+                            <span id="qty-display" class="text-2xl font-bold w-12 text-center">1</span>
+                            <button onclick="updateQty(1)" class="w-10 h-10 bg-white rounded-xl shadow-sm hover:bg-slate-200 transition flex items-center justify-center"><span class="material-icons-round">add</span></button>
+                        </div>
+                        <button onclick="addToCartFromModal()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-red-600 transition flex items-center justify-center space-x-2">
+                            <span class="material-icons-round">add_shopping_cart</span>
+                            <span>เพิ่มลงรถเข็น</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checkout Modal -->
+        <div id="checkout-modal" class="bg-white w-full max-w-xl rounded-[3rem] shadow-2xl p-8 md:p-12 relative hidden animate-in fade-in slide-in-from-bottom-10 duration-300">
+            <button onclick="closeModal()" class="absolute top-6 right-6 w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition">
+                <span class="material-icons-round">close</span>
+            </button>
+            <h2 class="mitr text-3xl font-bold mb-6 text-center">เลือกวิธีรับสินค้า</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <button onclick="setCheckoutMode('pickup')" id="btn-pickup" class="p-6 border-2 border-slate-200 rounded-3xl hover:border-red-500 transition text-center group">
+                    <span class="material-icons-round text-4xl mb-2 text-slate-300 group-hover:text-red-500">store</span>
+                    <div class="font-bold">ไปรับที่ร้าน</div>
+                </button>
+                <button onclick="setCheckoutMode('delivery')" id="btn-delivery" class="p-6 border-2 border-slate-200 rounded-3xl hover:border-red-500 transition text-center group">
+                    <span class="material-icons-round text-4xl mb-2 text-slate-300 group-hover:text-red-500">local_shipping</span>
+                    <div class="font-bold">จัดส่งถึงบ้าน</div>
+                </button>
+            </div>
+
+            <!-- 1. รับที่ร้าน -->
+            <div id="pickup-form" class="hidden space-y-4">
+                <h3 class="font-bold text-slate-500 text-sm uppercase">เลือกสาขาที่สะดวก:</h3>
+                <div class="space-y-2">
+                    <label class="flex items-center p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 border border-transparent has-[:checked]:border-red-500 transition">
+                        <input type="radio" name="location" value="underground" class="mr-3 accent-red-500">
+                        <div>
+                            <div class="font-bold">เมืองใต้ดินตรงรถไฟ</div>
+                            <div class="text-xs text-slate-400">สถานีลึกสุดใจ</div>
+                        </div>
+                    </label>
+                    <label class="flex items-center p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 border border-transparent has-[:checked]:border-red-500 transition">
+                        <input type="radio" name="location" value="tower1" class="mr-3 accent-red-500">
+                        <div>
+                            <div class="font-bold">หน้าตึกพันรัฐ 1</div>
+                            <div class="text-xs text-slate-400">ข้างถังขยะสีทอง</div>
+                        </div>
+                    </label>
+                </div>
+                <!-- ยืนยันว่าเป็นคนจริง -->
+                <div class="bg-red-50 p-4 rounded-2xl border border-red-100 mt-6">
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" id="is-human" class="w-5 h-5 accent-red-500">
+                        <span class="font-bold text-red-600">ฉันไม่ใช่หุ่นยนต์ (ยืนยันว่าคือคนจริงๆ)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 2. จัดส่ง -->
+            <div id="delivery-form" class="hidden space-y-4">
+                <div class="flex justify-between items-center">
+                    <label class="font-bold text-slate-500 text-sm uppercase italic">รหัสไปรษณีย์:</label>
+                    <a href="https://adil-i07.github.io/POSTAL-CODE/" target="_blank" class="text-xs text-blue-500 underline flex items-center">
+                        <span class="material-icons-round text-xs mr-1">help</span> ไม่รู้รหัสกดที่นี่
+                    </a>
+                </div>
+                <input type="text" id="postal-code" placeholder="กรอกรหัส 5 หลัก..." maxlength="5" class="w-full p-4 bg-slate-100 rounded-2xl font-bold text-center text-2xl tracking-[1rem] focus:outline-none focus:ring-2 focus:ring-red-500 transition">
+            </div>
+
+            <button onclick="finalSubmit()" id="btn-final" class="w-full mt-8 bg-slate-900 text-white py-5 rounded-3xl font-bold text-xl hover:bg-red-600 transition shadow-2xl hidden">
+                ชำระเงินให้จบๆ ไป!
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-16 text-center">
+        <div class="container mx-auto px-6 italic text-slate-400 text-xs tracking-widest uppercase">
+            © 2025 Limros Meatball Corp. - รับที่ร้าน หรือ จัดส่ง ก็ตดเหมือนกัน
+        </div>
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1, name: 'ส้มทอดกระป๋อง', price: 5, icon: '🍊', bgColor: 'bg-orange-500', lightColor: 'bg-orange-50', img: 'https://private-user-images.githubusercontent.com/207817524/561418431-dfffd314-776a-435d-adde-225fd964c5f0.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzMyMTQ0MjUsIm5iZiI6MTc3MzIxNDEyNSwicGF0aCI6Ii8yMDc4MTc1MjQvNTYxNDE4NDMxLWRmZmZkMzE0LTc3NmEtNDM1ZC1hZGRlLTIyNWZkOTY0YzVmMC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDMxMVQwNzI4NDVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT00ZTdhMjdjN2IwNDI4NmM3NDY5MzhmNDlhYTkyZTM4YWYzYTA4NDg1MzZmZDUxNjVjM2I4ODk4ZDgzYWI3ZDUzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.G73sWQkIxMbkLTpOXVamgw6oN5meVaoFF9ZBgwkJSKY', desc: 'ส้มสายน้ำผึ้งทอดพรีเมียม กินแล้วสดชื่น แต่เสี่ยงตดเหม็นส้ม' },
+            { id: 2, name: 'ฝรั่งทอดกระป๋อง', price: 5, icon: '🍏', bgColor: 'bg-emerald-500', lightColor: 'bg-emerald-50', img: 'https://private-user-images.githubusercontent.com/207817524/561418432-565a9a26-f4a8-43c5-a7ab-96ebae8654a9.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzMyMTQ0MjUsIm5iZiI6MTc3MzIxNDEyNSwicGF0aCI6Ii8yMDc4MTc1MjQvNTYxNDE4NDMyLTU2NWE5YTI2LWY0YTgtNDNjNS1hN2FiLTk2ZWJhZTg2NTRhOS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDMxMVQwNzI4NDVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT03MDVkODVhMWQ4M2M1OGY5MWQxOGQ2YzcxMzUxOWZkY2I4Y2QzNmU2NzQ4NjEwNzM2ZWNlZGZmYjQ5ZTU2Y2Y4JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.yGajflYUSHm-SDr_Co3R_THSUD_qRfABCst8lQ35tc8', desc: 'ฝรั่งกิมจูฝานบางทอดจนกรอบสะท้านฟัน มี มอก. รับรองปลอดภัย' },
+            { id: 3, name: 'องุ่นทอดกระป๋อง', price: 5, icon: '🍇', bgColor: 'bg-purple-500', lightColor: 'bg-purple-50', img: 'https://private-user-images.githubusercontent.com/207817524/561418430-22485a38-66db-446a-8bca-0ca3300a5855.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzMyMTQ0MjUsIm5iZiI6MTc3MzIxNDEyNSwicGF0aCI6Ii8yMDc4MTc1MjQvNTYxNDE4NDMwLTIyNDg1YTM4LTY2ZGItNDQ2YS04YmNhLTBjYTMzMDBhNTg1NS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDMxMVQwNzI4NDVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jZTAzNTdmNjk5MjY0YmI1YWU5ZTU2YmQzYjgyMGZmN2U1YmQ3NjIxZjIwYTdiNzU1YjcxNTdkNzIwYzI3YmE2JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.W5QKiMBCU-__678FJ1cuKX86vDVyJaDrDC5YGMXk758', desc: 'องุ่นเคียวโฮทอดกรอบสูญญากาศ รสชาติล้ำลึกเหมือนไวน์ทอด' },
+            { id: 4, name: 'แตงโมทอดกระป๋อง', price: 5, icon: '🍉', bgColor: 'bg-red-500', lightColor: 'bg-red-50', img: 'https://private-user-images.githubusercontent.com/207817524/561418433-d55e7bb7-d0fe-449c-8676-663216a13172.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NzMyMTQ0MjUsIm5iZiI6MTc3MzIxNDEyNSwicGF0aCI6Ii8yMDc4MTc1MjQvNTYxNDE4NDMzLWQ1NWU3YmI3LWQwZmUtNDQ5Yy04Njc2LTY2MzIxNmExMzE3Mi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwMzExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDMxMVQwNzI4NDVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zNGRlYTFiZWU1NDE2MTMzNWVmOWVjOWY3Y2YyOWYxNjU4NmE0YzY4NDY3YmU3M2FlMjg4N2I4MmQyNTNhMDQxJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.gnv_rPYUvERXQnmpE1-sK3PGjxuGyvcQw20k0F2pbdU', desc: 'แตงโมฉ่ำน้ำแต่ทอดจนกรอบ เทคโนโลยีลับเฉพาะตระกูลลิ้มรส' }
+        ];
+
+        let cart = [];
+        let currentQty = 1;
+        let activeProduct = null;
+        let checkoutMode = null;
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const isOpen = !sidebar.classList.contains('-translate-x-full');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+            if (!isOpen) setTimeout(() => overlay.classList.add('opacity-100'), 10);
+            else overlay.classList.remove('opacity-100');
+        }
+
+        // กดจาก Sidebar แล้วเลื่อนไปหาและเปิดทันที
+        function scrollToAndOpen(id) {
+            toggleSidebar();
+            const el = document.getElementById(`prod-${id}`);
+            if(el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => openModal(id), 500);
+            }
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = products.map(p => `
+                <div id="prod-${p.id}" class="product-card bg-white p-4 shadow-xl cursor-pointer group" onclick="openModal(${p.id})">
+                    <div class="${p.lightColor} h-64 rounded-[1.5rem] mb-6 flex items-center justify-center relative overflow-hidden">
+                        <!-- คุณสามารถเปลี่ยน <img> นี้เป็นลิงก์รูปที่คุณต้องการได้เลยเพื่อน -->
+                        <img src="${p.img}" alt="${p.name}" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-110 transition duration-700">
+                        <span class="text-6xl group-hover:scale-125 transition duration-500 z-10 drop-shadow-lg">${p.icon}</span>
+                    </div>
+                    <div class="px-2 pb-4 text-center">
+                        <h3 class="text-xl font-bold mitr uppercase">${p.name}</h3>
+                        <p class="text-red-500 font-bold mb-4">5 เจ๋ง</p>
+                        <button class="w-full bg-slate-100 group-hover:bg-slate-900 group-hover:text-white py-3 rounded-xl transition font-bold uppercase tracking-widest text-xs">ดูในป๋อง</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openModal(id) {
+            const p = products.find(x => x.id === id);
+            activeProduct = p;
+            currentQty = 1;
+            document.getElementById('modal-title').innerText = p.name;
+            document.getElementById('modal-desc').innerText = p.desc;
+            document.getElementById('modal-icon-container').innerText = p.icon;
+            document.getElementById('qty-display').innerText = currentQty;
+            document.getElementById('modal-color').className = `md:w-1/2 p-12 flex flex-col items-center justify-center text-white relative overflow-hidden ${p.bgColor}`;
+            
+            document.getElementById('modal-backdrop').classList.replace('hidden', 'flex');
+            document.getElementById('product-modal').classList.remove('hidden');
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function openCheckout() {
+            if (cart.length === 0) return alert('ใส่ของก่อนเพื่อน! จะซื้ออากาศหรอ?');
+            toggleSidebar();
+            document.getElementById('modal-backdrop').classList.replace('hidden', 'flex');
+            document.getElementById('product-modal').classList.add('hidden');
+            document.getElementById('checkout-modal').classList.remove('hidden');
+            resetCheckoutUI();
+        }
+
+        function setCheckoutMode(mode) {
+            checkoutMode = mode;
+            document.getElementById('pickup-form').classList.toggle('hidden', mode !== 'pickup');
+            document.getElementById('delivery-form').classList.toggle('hidden', mode !== 'delivery');
+            document.getElementById('btn-final').classList.remove('hidden');
+            
+            // Highlight buttons
+            document.getElementById('btn-pickup').classList.toggle('border-red-500', mode === 'pickup');
+            document.getElementById('btn-delivery').classList.toggle('border-red-500', mode === 'delivery');
+        }
+
+        function resetCheckoutUI() {
+            checkoutMode = null;
+            document.getElementById('pickup-form').classList.add('hidden');
+            document.getElementById('delivery-form').classList.add('hidden');
+            document.getElementById('btn-final').classList.add('hidden');
+            document.getElementById('btn-pickup').classList.remove('border-red-500');
+            document.getElementById('btn-delivery').classList.remove('border-red-500');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-backdrop').classList.replace('flex', 'hidden');
+        }
+
+        function updateQty(val) {
+            currentQty = Math.max(1, currentQty + val);
+            document.getElementById('qty-display').innerText = currentQty;
+        }
+
+        function addToCartFromModal() {
+            const existing = cart.find(item => item.id === activeProduct.id);
+            if (existing) existing.qty += currentQty;
+            else cart.push({ ...activeProduct, qty: currentQty });
+            updateCartUI();
+            closeModal();
+            toggleSidebar();
+        }
+
+        function removeCartItem(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartList = document.getElementById('cart-items');
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            const rawTotal = totalCount * 5;
+            const hasDiscount = totalCount >= 4;
+            const finalTotal = hasDiscount ? rawTotal * 0.85 : rawTotal;
+
+            document.getElementById('cart-count-nav').innerText = totalCount;
+            document.getElementById('cart-total').innerText = `${finalTotal.toFixed(1)} เจ๋ง`;
+            document.getElementById('discount-notice').classList.toggle('hidden', !hasDiscount);
+
+            if (cart.length === 0) {
+                cartList.innerHTML = `<p class="text-slate-400 text-sm italic text-center py-4">ไม่มีสินค้าในรถเข็น...</p>`;
+            } else {
+                cartList.innerHTML = cart.map(item => `
+                    <div class="flex items-center justify-between bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">${item.icon}</span>
+                            <div>
+                                <div class="font-bold text-xs uppercase">${item.name}</div>
+                                <div class="text-[10px] text-slate-500 italic">${item.qty} ป๋อง</div>
+                            </div>
+                        </div>
+                        <button onclick="removeCartItem(${item.id})" class="text-slate-300 hover:text-red-500 transition">
+                            <span class="material-icons-round text-lg">delete_outline</span>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function finalSubmit() {
+            if (checkoutMode === 'pickup') {
+                const loc = document.querySelector('input[name="location"]:checked');
+                const human = document.getElementById('is-human').checked;
+                if (!loc) return alert('เลือกสาขาก่อนเพื่อน!');
+                if (!human) return alert('กดยืนยันด้วยว่าคุณเป็นคน ไม่ใช่หุ่นยนต์!');
+                alert(`ชำระเงินเรียบร้อย! ไปรับของได้ที่: ${loc.value === 'underground' ? 'เมืองใต้ดินตรงรถไฟ' : 'หน้าตึกพันรัฐ 1'}\nเตรียมตดรอได้เลย!`);
+            } else if (checkoutMode === 'delivery') {
+                const code = document.getElementById('postal-code').value;
+                if (code.length !== 5 || isNaN(code)) return alert('รหัสไปรษณีย์ต้องเป็นตัวเลข 5 หลักนะเพื่อน!');
+                alert(`ชำระเงินเรียบร้อย! เราจะส่งไปที่รหัสไปรษณีย์ ${code} ภายใน 100 ปีแน่นอน!`);
+            }
+            
+            cart = [];
+            updateCartUI();
+            closeModal();
+        }
+
+        renderProducts();
+    </script>
+</body>
+</html>
