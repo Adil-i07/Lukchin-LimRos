@@ -35,6 +35,18 @@
   .btn-shine{position:relative;overflow:hidden}
   .btn-shine::after{content:'';position:absolute;top:0;left:-80%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:skewX(-20deg);transition:left .6s}
   .btn-shine:hover::after{left:130%}
+  .closed{transform:translateX(100%)}
+  .sheet-handle{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:44px;height:5px;border-radius:9999px;background:#cbd5e1;z-index:30;touch-action:none;cursor:grab}
+  @keyframes sheet{from{transform:translateY(100%)}to{transform:none}}
+  @media(max-width:767px){
+    #backdrop{align-items:flex-end!important;padding:0!important;overflow:hidden!important}
+    #backdrop>div{max-width:none!important;width:100%!important;border-radius:1.75rem 1.75rem 0 0!important;max-height:92vh;overflow-y:auto!important;padding-top:1.75rem;animation:sheet .4s cubic-bezier(.32,.72,0,1)!important;overscroll-behavior:contain}
+    #product-modal{padding-top:0!important}
+    #cart{top:auto!important;left:0;right:0;bottom:0;width:100%!important;height:auto!important;max-height:88vh;border-radius:1.75rem 1.75rem 0 0;padding-top:1rem}
+    #cart.closed{transform:translateY(100%)}
+    #cart-items{max-height:38vh}
+  }
+  @media(min-width:768px){.sheet-handle{display:none}}
   ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#888;border-radius:10px}
 </style>
 </head>
@@ -61,7 +73,8 @@
 
 <!-- Cart -->
 <div id="overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/50 z-[90] hidden"></div>
-<aside id="cart" class="drawer fixed top-0 right-0 h-full w-[340px] max-w-full bg-white z-[100] shadow-2xl translate-x-full flex flex-col">
+<aside id="cart" class="drawer fixed top-0 right-0 h-full w-[340px] max-w-full bg-white z-[100] shadow-2xl closed flex flex-col">
+  <div class="sheet-handle" data-sheet="cart"></div>
   <div class="p-6 border-b flex justify-between items-center">
     <h2 class="mitr font-bold text-2xl flex items-center"><span class="material-icons-round mr-2 text-red-500">shopping_basket</span>ตะกร้าสินค้า</h2>
     <button onclick="toggleCart()" class="text-slate-400 hover:text-red-500 transition hover:rotate-90"><span class="material-icons-round">close</span></button>
@@ -124,9 +137,8 @@
 <footer id="contact" class="bg-white border-t border-slate-200 py-14">
   <div class="container mx-auto px-6 text-center">
     <div class="mitr text-2xl font-bold mb-4">ลูกชิ้นลิ้มรส</div>
-    <div class="flex justify-center gap-4 mb-6 text-sm">
-      <a href="https://github.com/Adil-i07/Lukchin-LimRos/issues/1#issue-4056434562" target="_blank" class="flex items-center gap-1 px-4 py-2 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-100 hover:-translate-y-1 transition"><span class="material-icons-round text-base">chat</span>ความเห็น</a>
-      <a href="https://adil-i07.github.io/Lukchin-LimRos/" class="flex items-center gap-1 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 hover:-translate-y-1 transition"><span class="material-icons-round text-base">share</span>แชร์ต่อ</a>
+    <div class="flex justify-center mb-6 text-sm">
+      <button onclick="sharePage()" class="flex items-center gap-1 px-5 py-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 hover:-translate-y-1 transition"><span class="material-icons-round text-base">share</span>แชร์ต่อ</button>
     </div>
     <div class="text-slate-400 text-xs tracking-widest uppercase">© 2025 Limros Meatball Corp. สงวนลิขสิทธิ์</div>
   </div>
@@ -137,6 +149,7 @@
 <!-- Modals -->
 <div id="backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] hidden items-center justify-center p-4 overflow-y-auto">
   <div id="product-modal" class="pop bg-white w-full max-w-4xl rounded-[2.5rem] shadow-2xl overflow-hidden relative hidden">
+    <div class="sheet-handle" data-sheet="modal"></div>
     <button onclick="closeModal()" class="absolute top-5 right-5 z-10 w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white hover:rotate-90 transition"><span class="material-icons-round">close</span></button>
     <div class="flex flex-col md:flex-row">
       <div id="modal-color" class="md:w-1/2 p-10 flex items-center justify-center relative overflow-hidden">
@@ -158,6 +171,7 @@
   </div>
 
   <div id="checkout-modal" class="pop bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl p-8 md:p-10 relative hidden">
+    <div class="sheet-handle" data-sheet="modal"></div>
     <button onclick="closeModal()" class="absolute top-5 right-5 w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white hover:rotate-90 transition"><span class="material-icons-round">close</span></button>
     <h2 class="mitr text-3xl font-bold mb-6 text-center">เลือกวิธีรับสินค้า</h2>
     <div class="grid grid-cols-2 gap-4 mb-6">
@@ -180,6 +194,7 @@
   </div>
 
   <div id="success-modal" class="pop bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl p-10 text-center hidden">
+    <div class="sheet-handle" data-sheet="modal"></div>
     <span class="material-icons-round text-emerald-500 text-7xl float">check_circle</span>
     <h2 class="mitr text-2xl font-bold mt-2 mb-2">ทำรายการสำเร็จ</h2>
     <p id="success-text" class="text-slate-600 text-sm leading-relaxed mb-6"></p>
@@ -202,7 +217,7 @@
   let cart=[],qty=1,active=null,mode=null;
   const $=id=>document.getElementById(id);
 
-  function toggleCart(){$('cart').classList.toggle('translate-x-full');$('overlay').classList.toggle('hidden')}
+  function toggleCart(){$('cart').classList.toggle('closed');$('overlay').classList.toggle('hidden')}
   function toast(msg){const t=$('toast');t.innerHTML='<span class="material-icons-round text-emerald-400 text-base">check_circle</span>'+msg;t.classList.remove('-translate-y-24','opacity-0');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.add('-translate-y-24','opacity-0'),2200)}
 
   function renderAll(){
@@ -314,6 +329,28 @@
     const dx=e.clientX/innerWidth-.5,dy=e.clientY/innerHeight-.5;
     document.querySelectorAll('[data-depth]').forEach(el=>{const d=+el.dataset.depth;el.style.translate=`${dx*d}px ${dy*d}px`});
   });
+
+  // Bottom sheet: ลากที่แถบด้านบนลงเพื่อปิด (มือถือ)
+  document.querySelectorAll('.sheet-handle').forEach(h=>{
+    const sheet=h.parentElement;let y0=null,dy=0;
+    h.addEventListener('touchstart',e=>{y0=e.touches[0].clientY;dy=0;sheet.style.animation='none';sheet.style.transition='none'},{passive:true});
+    h.addEventListener('touchmove',e=>{dy=Math.max(0,e.touches[0].clientY-y0);sheet.style.transform=`translateY(${dy}px)`},{passive:true});
+    h.addEventListener('touchend',()=>{
+      sheet.style.transition='transform .3s ease';
+      if(dy>90){h.dataset.sheet==='cart'?toggleCart():closeModal()}
+      sheet.style.transform='';setTimeout(()=>{sheet.style.transition='';sheet.style.animation=''},320);y0=null});
+  });
+  // แชร์ลิงก์ของหน้าเว็บนี้
+  async function sharePage(){
+    const url=location.href.split('#')[0];
+    try{
+      if(navigator.share){await navigator.share({title:document.title,text:'ลูกชิ้นลิ้มรส ผลไม้ทอดกรอบบรรจุกระป๋อง',url});return}
+      await navigator.clipboard.writeText(url);toast('คัดลอกลิงก์แล้ว');
+    }catch(e){
+      if(e&&e.name==='AbortError')return;
+      prompt('คัดลอกลิงก์นี้เพื่อแชร์',url);
+    }
+  }
   addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
   renderAll();updateCart();
 </script>
