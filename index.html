@@ -60,25 +60,25 @@
     .add-wrap{position:sticky;bottom:0;z-index:20;margin:0 -2.5rem -2.5rem;padding:.75rem 2.5rem calc(.75rem + env(safe-area-inset-bottom,0px));background:#fff;box-shadow:0 -10px 24px rgba(15,23,42,.10)}
   }
   @media(min-width:768px){.sheet-handle{display:none}}
-  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#888;border-radius:10px}
+  ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:#84A85A;border-radius:10px}
 </style>
 </head>
-<body class="bg-slate-50 text-slate-800 overflow-x-hidden">
+<body class="bg-lime-50 text-slate-800 overflow-x-hidden">
 
-<div id="progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-red-500 to-yellow-400 z-[200] w-0"></div>
+<div id="progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-lime-300 to-green-500 z-[200] w-0"></div>
 <canvas id="confetti" class="fixed inset-0 pointer-events-none z-[300]"></canvas>
-<div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 -translate-y-24 opacity-0 z-[250] bg-slate-900 text-white px-6 py-3 rounded-full shadow-2xl text-sm transition-all duration-500 flex items-center gap-2"></div>
+<div id="toast" class="fixed top-24 left-1/2 -translate-x-1/2 -translate-y-24 opacity-0 z-[250] bg-lime-200 text-slate-800 px-6 py-3 rounded-full shadow-2xl text-sm transition-all duration-500 flex items-center gap-2"></div>
 
 <!-- Navbar -->
 <nav id="nav" class="fixed top-0 left-0 w-full z-[80] px-6 py-4 flex justify-between items-center bg-white/60 backdrop-blur-md border-b border-slate-200 transition-all duration-300">
-  <a href="#home" class="mitr font-bold text-xl tracking-tight flex items-center gap-2"><span class="material-icons-round text-red-500">storefront</span>ลูกชิ้นลิ้มรส</a>
+  <a href="#home" class="mitr font-bold text-xl tracking-tight flex items-center gap-2"><span class="material-icons-round text-lime-700">storefront</span>ลูกชิ้นลิ้มรส</a>
   <div class="hidden md:flex gap-8 text-sm font-medium text-slate-600">
-    <a href="#home" class="hover:text-red-500 transition">หน้าแรก</a>
-    <a href="#products" class="hover:text-red-500 transition">สินค้า</a>
-    <a href="#pickup" class="hover:text-red-500 transition">จุดรับสินค้า</a>
-    <a href="#contact" class="hover:text-red-500 transition">ติดต่อเรา</a>
+    <a href="#home" class="hover:text-lime-700 transition">หน้าแรก</a>
+    <a href="#products" class="hover:text-lime-700 transition">สินค้า</a>
+    <a href="#pickup" class="hover:text-lime-700 transition">จุดรับสินค้า</a>
+    <a href="#contact" class="hover:text-lime-700 transition">ติดต่อเรา</a>
   </div>
-  <button id="cart-btn" onclick="toggleCart()" class="btn-shine flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-full hover:bg-red-600 transition shadow-lg">
+  <button id="cart-btn" onclick="toggleCart()" class="btn-shine flex items-center gap-2 bg-lime-200 text-slate-800 px-4 py-2 rounded-full hover:bg-lime-600 transition shadow-lg">
     <span class="material-icons-round text-sm">shopping_cart</span><span class="text-sm">ตะกร้า</span>
     <span id="cart-count-nav" class="font-bold">0</span>
   </button>
@@ -89,15 +89,15 @@
 <aside id="cart" class="drawer fixed top-0 right-0 h-full w-[340px] max-w-full bg-white z-[100] shadow-2xl closed flex flex-col">
   <div class="sheet-handle" data-sheet="cart"></div>
   <div class="p-6 border-b flex justify-between items-center">
-    <h2 class="mitr font-bold text-2xl flex items-center"><span class="material-icons-round mr-2 text-red-500">shopping_basket</span>ตะกร้าสินค้า</h2>
-    <button onclick="toggleCart()" class="text-slate-400 hover:text-red-500 transition hover:rotate-90"><span class="material-icons-round">close</span></button>
+    <h2 class="mitr font-bold text-2xl flex items-center"><span class="material-icons-round mr-2 text-lime-700">shopping_basket</span>ตะกร้าสินค้า</h2>
+    <button onclick="toggleCart()" class="text-slate-400 hover:text-lime-700 transition hover:rotate-90"><span class="material-icons-round">close</span></button>
   </div>
   <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-3"></div>
-  <div class="p-6 bg-slate-50 border-t">
+  <div class="p-6 bg-lime-50 border-t">
     <div id="discount-notice" class="hidden badge mb-3 p-2 rounded-lg text-white text-xs font-bold text-center">รับส่วนลด 15% แล้ว! (ซื้อครบ 4 กระป๋อง)</div>
     <div class="flex justify-between text-sm text-slate-500 mb-1"><span>ราคาสินค้า</span><span id="cart-subtotal">0 เจ๋ง</span></div>
     <div class="flex justify-between items-center mb-4"><span class="text-slate-500">ยอดรวมสุทธิ:</span><span id="cart-total" class="text-xl font-bold">0 เจ๋ง</span></div>
-    <button onclick="openCheckout()" class="btn-shine w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-red-600 transition shadow-lg flex items-center justify-center"><span class="material-icons-round mr-2">payment</span>ดำเนินการชำระเงิน</button>
+    <button onclick="openCheckout()" class="btn-shine w-full bg-lime-200 text-slate-800 py-4 rounded-2xl font-bold hover:bg-lime-600 transition shadow-lg flex items-center justify-center"><span class="material-icons-round mr-2">payment</span>ดำเนินการชำระเงิน</button>
   </div>
 </aside>
 
@@ -113,13 +113,13 @@
     <p class="tracking-[.35em] text-xs mb-4 uppercase opacity-90">Limros Meatball Corp.</p>
     <h1 class="text-5xl md:text-8xl font-bold mb-6 mitr tracking-tight">ลูกชิ้นลิ้มรส</h1>
     <p class="text-xl md:text-2xl max-w-2xl mx-auto opacity-95 font-light leading-relaxed mb-8">ผลไม้ทอดกรอบบรรจุกระป๋อง คัดสรรคุณภาพ พร้อมรับประทาน</p>
-    <a href="#products" class="btn-shine inline-block bg-white text-red-500 px-8 py-3 rounded-full font-bold shadow-xl hover:scale-110 transition">เลือกซื้อสินค้า</a>
+    <a href="#products" class="btn-shine inline-block bg-white text-lime-700 px-8 py-3 rounded-full font-bold shadow-xl hover:scale-110 transition">เลือกซื้อสินค้า</a>
   </div>
   <svg class="absolute bottom-0 left-0 w-full h-[60px]" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C58.47,100.5,123.47,100.5,182.25,93.63,240.42,86.83,281,71,321.39,56.44Z" fill="#f8fafc"/></svg>
 </header>
 
 <!-- Marquee -->
-<div class="bg-slate-900 text-white py-3 overflow-hidden text-sm">
+<div class="bg-lime-200 text-slate-800 py-3 overflow-hidden text-sm">
   <div class="marquee">
     <script>document.write(('<span class="mx-8">🔥 ซื้อครบ 4 กระป๋อง ลด 15% คละรสได้</span><span class="mx-8">🏬 รับสินค้าได้ 3 จุด</span><span class="mx-8">🚚 มีบริการจัดส่งถึงที่อยู่</span><span class="mx-8">✅ ทอดกรอบทุกกระป๋อง</span>').repeat(6))</script>
   </div>
@@ -134,9 +134,9 @@
 <!-- Stats -->
 <section class="bg-white border-y py-14">
   <div class="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-    <div class="reveal"><div class="mitr text-5xl text-red-500" data-count="4">0</div><div class="text-slate-500 text-sm">รสชาติ</div></div>
-    <div class="reveal"><div class="mitr text-5xl text-orange-500" data-count="3">0</div><div class="text-slate-500 text-sm">จุดรับสินค้า</div></div>
-    <div class="reveal"><div class="mitr text-5xl text-yellow-500" data-count="15" data-suffix="%">0</div><div class="text-slate-500 text-sm">ส่วนลดเมื่อซื้อ 4 กระป๋อง</div></div>
+    <div class="reveal"><div class="mitr text-5xl text-lime-700" data-count="4">0</div><div class="text-slate-500 text-sm">รสชาติ</div></div>
+    <div class="reveal"><div class="mitr text-5xl text-lime-600" data-count="3">0</div><div class="text-slate-500 text-sm">จุดรับสินค้า</div></div>
+    <div class="reveal"><div class="mitr text-5xl text-green-600" data-count="15" data-suffix="%">0</div><div class="text-slate-500 text-sm">ส่วนลดเมื่อซื้อ 4 กระป๋อง</div></div>
     <div class="reveal"><div class="mitr text-5xl text-emerald-500" data-count="100" data-suffix="%">0</div><div class="text-slate-500 text-sm">ทอดกรอบ</div></div>
   </div>
 </section>
@@ -157,7 +157,7 @@
   </div>
 </footer>
 
-<button id="top" onclick="scrollTo({top:0})" class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-slate-900 text-white shadow-xl flex items-center justify-center hover:bg-red-600 transition-all opacity-0 pointer-events-none z-[70]"><span class="material-icons-round">arrow_upward</span></button>
+<button id="top" onclick="scrollTo({top:0})" class="fixed bottom-6 right-6 w-12 h-12 rounded-full bg-lime-200 text-slate-800 shadow-xl flex items-center justify-center hover:bg-lime-600 transition-all opacity-0 pointer-events-none z-[70]"><span class="material-icons-round">arrow_upward</span></button>
 
 <!-- Modals -->
 <div id="backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] hidden items-center justify-center p-4 overflow-y-auto">
@@ -171,7 +171,7 @@
       </div>
       <div class="md:w-1/2 p-10 md:p-12">
         <h2 id="modal-title" class="text-3xl font-bold mitr mb-2"></h2>
-        <div class="text-2xl text-red-500 font-bold mb-5">5 เจ๋ง / กระป๋อง</div>
+        <div class="text-2xl text-lime-700 font-bold mb-5">5 เจ๋ง / กระป๋อง</div>
         <p id="modal-desc" class="text-slate-600 leading-relaxed mb-8 text-sm"></p>
         <div class="flex items-center justify-between bg-slate-100 p-2 rounded-2xl mb-4">
           <button onclick="updateQty(-1)" class="w-10 h-10 bg-white rounded-xl shadow-sm hover:bg-slate-200 active:scale-90 transition flex items-center justify-center"><span class="material-icons-round">remove</span></button>
@@ -179,7 +179,7 @@
           <button onclick="updateQty(1)" class="w-10 h-10 bg-white rounded-xl shadow-sm hover:bg-slate-200 active:scale-90 transition flex items-center justify-center"><span class="material-icons-round">add</span></button>
         </div>
         <div class="add-wrap">
-          <button id="add-btn" onclick="addToCart()" class="btn-shine w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-red-600 transition flex items-center justify-center gap-2"><span class="material-icons-round">add_shopping_cart</span>เพิ่มลงตะกร้า</button>
+          <button id="add-btn" onclick="addToCart()" class="btn-shine w-full bg-lime-200 text-slate-800 py-4 rounded-2xl font-bold hover:bg-lime-600 transition flex items-center justify-center gap-2"><span class="material-icons-round">add_shopping_cart</span>เพิ่มลงตะกร้า</button>
         </div>
       </div>
     </div>
@@ -190,8 +190,8 @@
     <button onclick="closeModal()" class="absolute top-5 right-5 w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white hover:rotate-90 transition"><span class="material-icons-round">close</span></button>
     <h2 class="mitr text-3xl font-bold mb-6 text-center">เลือกวิธีรับสินค้า</h2>
     <div class="grid grid-cols-2 gap-4 mb-6">
-      <button onclick="setMode('pickup')" id="btn-pickup" class="p-5 border-2 border-slate-200 rounded-3xl hover:border-red-500 hover:-translate-y-1 transition text-center group"><span class="material-icons-round text-4xl text-slate-300 group-hover:text-red-500 transition">store</span><div class="font-bold">ไปรับที่ร้าน</div></button>
-      <button onclick="setMode('delivery')" id="btn-delivery" class="p-5 border-2 border-slate-200 rounded-3xl hover:border-red-500 hover:-translate-y-1 transition text-center group"><span class="material-icons-round text-4xl text-slate-300 group-hover:text-red-500 transition">local_shipping</span><div class="font-bold">จัดส่งถึงที่อยู่</div></button>
+      <button onclick="setMode('pickup')" id="btn-pickup" class="p-5 border-2 border-slate-200 rounded-3xl hover:border-red-500 hover:-translate-y-1 transition text-center group"><span class="material-icons-round text-4xl text-slate-300 group-hover:text-lime-700 transition">store</span><div class="font-bold">ไปรับที่ร้าน</div></button>
+      <button onclick="setMode('delivery')" id="btn-delivery" class="p-5 border-2 border-slate-200 rounded-3xl hover:border-red-500 hover:-translate-y-1 transition text-center group"><span class="material-icons-round text-4xl text-slate-300 group-hover:text-lime-700 transition">local_shipping</span><div class="font-bold">จัดส่งถึงที่อยู่</div></button>
     </div>
     <div id="pickup-form" class="hidden space-y-3">
       <h3 class="font-bold text-slate-500 text-sm">เลือกจุดรับสินค้า:</h3>
@@ -205,7 +205,7 @@
 <input type="text" id="postal-code" placeholder="เช่น 13.75,100.50" class="w-full p-4 bg-slate-100 rounded-2xl font-bold text-center text-xl tracking-normal focus:outline-none focus:ring-2 focus:ring-red-500 transition">
     </div>
     <p id="form-error" class="hidden mt-4 text-sm text-red-600 bg-red-50 rounded-xl p-2 text-center"></p>
-    <button onclick="submitOrder()" id="btn-final" class="btn-shine hidden w-full mt-6 bg-slate-900 text-white py-4 rounded-3xl font-bold text-lg hover:bg-red-600 transition shadow-xl">ยืนยันคำสั่งซื้อและชำระเงิน</button>
+    <button onclick="submitOrder()" id="btn-final" class="btn-shine hidden w-full mt-6 bg-lime-200 text-slate-800 py-4 rounded-3xl font-bold text-lg hover:bg-lime-600 transition shadow-xl">ยืนยันคำสั่งซื้อและชำระเงิน</button>
   </div>
 
  <div id="success-modal" class="pop bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl p-10 text-center hidden">
@@ -216,7 +216,7 @@
     <p id="success-text" class="text-slate-600 text-sm leading-relaxed mb-6"></p>
   </div>
   <div id="save-status" class="text-xs text-emerald-600 font-bold mb-4 h-4"></div>
-  <button onclick="closeModal()" class="bg-slate-900 text-white px-8 py-3 rounded-2xl font-bold hover:bg-red-600 transition">ปิด</button>
+  <button onclick="closeModal()" class="bg-lime-200 text-slate-800 px-8 py-3 rounded-2xl font-bold hover:bg-lime-600 transition">ปิด</button>
 </div>
 
 <script>
@@ -248,8 +248,8 @@ const pickups=[
           </div>
           <div class="px-2 pb-3 text-center">
             <h3 class="text-lg font-bold mitr">${p.name}</h3>
-            <p class="text-red-500 font-bold mb-4">${p.price} เจ๋ง / กระป๋อง</p>
-            <button class="w-full bg-slate-100 group-hover:bg-slate-900 group-hover:text-white py-3 rounded-xl transition font-bold text-xs tracking-widest">ดูรายละเอียด</button>
+            <p class="text-lime-700 font-bold mb-4">${p.price} เจ๋ง / กระป๋อง</p>
+            <button class="w-full bg-slate-100 group-hover:bg-lime-700 group-hover:text-white py-3 rounded-xl transition font-bold text-xs tracking-widest">ดูรายละเอียด</button>
           </div>
           <div class="shine rounded-[2rem]"></div>
         </div>
@@ -266,7 +266,7 @@ const pickups=[
     </a>
   </div>`).join('');
     $('pickup-options').innerHTML=pickups.map(l=>`
-  <label class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl cursor-pointer hover:bg-slate-100 border border-transparent has-[:checked]:border-red-500 transition">
+  <label class="flex items-center justify-between p-4 bg-lime-50 rounded-2xl cursor-pointer hover:bg-slate-100 border border-transparent has-[:checked]:border-red-500 transition">
     <div class="flex items-center gap-3">
       <input type="radio" name="location" value="${l.id}" class="accent-red-500">
       <div class="font-bold text-sm">${l.name}</div>
@@ -373,10 +373,10 @@ const pickups=[
     $('cart-count-nav').innerText=n;$('cart-subtotal').innerText=`${raw} เจ๋ง`;
     $('cart-total').innerText=`${(+total.toFixed(2))} เจ๋ง`;$('discount-notice').classList.toggle('hidden',!disc);
     $('cart-items').innerHTML=cart.length?cart.map(i=>`
-      <div class="pop flex items-center gap-3 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+      <div class="pop flex items-center gap-3 bg-lime-50 p-3 rounded-2xl border border-slate-100">
         <img src="${i.img}" alt="" class="w-12 h-12 object-contain ${i.light} rounded-xl">
         <div class="flex-grow"><div class="font-bold text-xs">${i.name}</div><div class="text-[11px] text-slate-500">${i.qty} กระป๋อง × ${i.price} เจ๋ง</div></div>
-        <button onclick="removeItem(${i.id})" class="text-slate-300 hover:text-red-500 transition"><span class="material-icons-round">delete_outline</span></button>
+        <button onclick="removeItem(${i.id})" class="text-slate-300 hover:text-lime-700 transition"><span class="material-icons-round">delete_outline</span></button>
       </div>`).join(''):'<p class="text-slate-400 text-sm italic text-center py-10">ยังไม่มีสินค้าในตะกร้า</p>';
   }
   function openCheckout(){
