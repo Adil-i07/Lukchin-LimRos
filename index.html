@@ -127,7 +127,7 @@
 
 <!-- Products -->
 <main id="products" class="container mx-auto px-4 py-20">
-  <div class="text-center mb-12 reveal"><h2 class="mitr text-4xl font-bold">สินค้าของเรา</h2><p class="text-slate-500 mt-2">กระป๋องละ 5 เจ๋ง เลือกได้ตามรสที่ชอบ</p></div>
+  <div class="text-center mb-12 reveal"><h2 class="mitr text-4xl font-bold">สินค้าของเรา</h2><p class="text-slate-500 mt-2">กระป๋องละ 5.5 เจ๋ง เลือกได้ตามรสที่ชอบ</p></div>
   <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"></div>
 </main>
 
@@ -171,7 +171,7 @@
       </div>
       <div class="md:w-1/2 p-10 md:p-12">
         <h2 id="modal-title" class="text-3xl font-bold mitr mb-2"></h2>
-        <div class="text-2xl text-lime-700 font-bold mb-5">5 เจ๋ง / กระป๋อง</div>
+        <div class="text-2xl text-lime-700 font-bold mb-5">5.5 เจ๋ง / กระป๋อง</div>
         <p id="modal-desc" class="text-slate-600 leading-relaxed mb-8 text-sm"></p>
         <div class="flex items-center justify-between bg-slate-100 p-2 rounded-2xl mb-4">
           <button onclick="updateQty(-1)" class="w-10 h-10 bg-white rounded-xl shadow-sm hover:bg-slate-200 active:scale-90 transition flex items-center justify-center"><span class="material-icons-round">remove</span></button>
@@ -221,10 +221,10 @@
 
 <script>
   const products=[
-    {id:1,name:'ส้มทอดกรอบบรรจุกระป๋อง',price:5,img:'ส้ม.png',bgColor:'bg-orange-500',light:'bg-orange-50',desc:'ส้มสายน้ำผึ้งคัดคุณภาพ ทอดกรอบพรีเมียม รสหวานอมเปรี้ยวหอมกลิ่นส้ม รับประทานง่าย'},
-    {id:2,name:'ฝรั่งทอดกรอบบรรจุกระป๋อง',price:5,img:'ฝรั่ง.png',bgColor:'bg-emerald-500',light:'bg-emerald-50',desc:'ฝรั่งกิมจูหั่นบาง ทอดกรอบเบา เนื้อสัมผัสกรุบกรอบ รสชาติกลมกล่อม'},
-    {id:3,name:'องุ่นทอดกรอบบรรจุกระป๋อง',price:5,img:'องุ่น.png',bgColor:'bg-purple-500',light:'bg-purple-50',desc:'องุ่นเคียวโฮทอดกรอบด้วยกรรมวิธีสูญญากาศ รสชาติเข้มข้นลุ่มลึก'},
-    {id:4,name:'แตงโมทอดกรอบบรรจุกระป๋อง',price:5,img:'แตงโม.png',bgColor:'bg-red-500',light:'bg-red-50',desc:'แตงโมเนื้อฉ่ำทอดกรอบด้วยเทคนิคเฉพาะของตระกูลลิ้มรส หวานกรอบเป็นเอกลักษณ์'}
+    {id:1,name:'ส้มทอดกรอบบรรจุกระป๋อง',price:5.5,img:'ส้ม.png',bgColor:'bg-orange-500',light:'bg-orange-50',desc:'ส้มสายน้ำผึ้งคัดคุณภาพ ทอดกรอบพรีเมียม รสหวานอมเปรี้ยวหอมกลิ่นส้ม รับประทานง่าย'},
+    {id:2,name:'ฝรั่งทอดกรอบบรรจุกระป๋อง',price:5.5,img:'ฝรั่ง.png',bgColor:'bg-emerald-500',light:'bg-emerald-50',desc:'ฝรั่งกิมจูหั่นบาง ทอดกรอบเบา เนื้อสัมผัสกรุบกรอบ รสชาติกลมกล่อม'},
+    {id:3,name:'องุ่นทอดกรอบบรรจุกระป๋อง',price:5.5,img:'องุ่น.png',bgColor:'bg-purple-500',light:'bg-purple-50',desc:'องุ่นเคียวโฮทอดกรอบด้วยกรรมวิธีสูญญากาศ รสชาติเข้มข้นลุ่มลึก'},
+    {id:4,name:'แตงโมทอดกรอบบรรจุกระป๋อง',price:5.5,img:'แตงโม.png',bgColor:'bg-red-500',light:'bg-red-50',desc:'แตงโมเนื้อฉ่ำทอดกรอบด้วยเทคนิคเฉพาะของตระกูลลิ้มรส หวานกรอบเป็นเอกลักษณ์'}
   ];
 const pickups=[
   {id:'b',name:'หน้าตึกพันรัฐ อาคาร B',sub:'จุดรับสินค้า',icon:'apartment',map:'https://postalcodeft.wasmer.app/#/map/p=849.2,427.9'},
